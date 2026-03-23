@@ -1,22 +1,23 @@
 import requests
+import time
 
 class AIWriter:
     def __init__(self, api_key):
         self.api_key = api_key
 
-    def write(self, material):
-        prompt = f"""
+    def generate_article(self, material):
+        system_prompt = """
+你是UTS官方技术博主，专注企业级实操。
+文章结构：场景→问题→方案→代码→小结
+语言专业、简洁、可直接复制使用。
+"""
+        user_prompt = f"""
 素材：{material}
-你是UTS官方技术博主，写企业级实操文章。
-要求：
-1. 一个问题一篇文章
-2. 结构：标题 + 场景 + 问题 + 解决方案 + 代码 + 总结
-3. 生成爆款标题
-4. 自动归类专栏
-输出格式：
+
+输出格式严格如下：
 【专栏】
-【标题】
-【内容】Markdown
+【爆款标题】
+【正文】markdown
 """
         try:
             resp = requests.post(
@@ -25,19 +26,21 @@ class AIWriter:
                 json={
                     "model": "deepseek-chat",
                     "messages": [
-                        {"role": "system", "content": "专业技术博主"},
-                        {"role": "user", "content": prompt}
-                    ]
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_prompt}
+                    ],
+                    "temperature": 0.6
                 }
             )
-            t = resp.json()["choices"][0]["message"]["content"]
-            col = t.split("【专栏】")[1].split("\n")[0].strip()
-            title = t.split("【标题】")[1].split("\n")[0].strip()
-            content = t.split("【内容】")[1].strip()
-        except:
-            col = "UTS数据传输"
-            title = "UTS传输超时 1分钟解决"
-            content = "# UTS问题解决\n\n问题：连接超时\n解决：检查端口、防火墙"
-
-        cover_url = "https://picsum.photos/800/400"
-        return {"column": col, "title": title, "content": content, "cover": cover_url}
+            txt = resp.json()["choices"][0]["message"]["content"]
+            column = txt.split("【专栏】")[1].split("\n")[0].strip()
+            title = txt.split("【爆款标题】")[1].split("\n")[0].strip()
+            content = txt.split("【正文】")[1].strip()
+            return {"column": column, "title": title, "content": content}
+        except Exception as e:
+            print("AI生成异常，使用默认内容")
+            return {
+                "column": "UTS数据传输",
+                "title": f"UTS日常问题解决 {time.strftime('%Y-%m-%d')}",
+                "content": "本文记录UTS实际使用中的常见问题与解决方案。"
+            }
