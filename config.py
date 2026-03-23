@@ -30,7 +30,7 @@ PLATFORM_CONFIG = {
 }
 
 # AI 写作配置
-AI_API_KEY = "你的AI API Key"  # 等下我教你填
+AI_API_KEY = "sk-6c6716e188ee498f9466fd1f2daff8b5"  # 等下我教你填
 ARTICLE_LENGTH = "800-1200字"
 BLOG_TAGS = {
     "UTS数据传输": ["UTS", "数据传输", "中间件", "技术实操"],
