@@ -1,8 +1,9 @@
+import os
 # =============== 你的专属账号配置 ===============
 PLATFORM_CONFIG = {
     "csdn": {
         "username": "qing_lr",
-        "password": "uts963@qazwsx",  # 填你的CSDN密码
+        "password": os.getenv("CSDN_PASSWORD"),
         "column": {
             "UTS数据传输": "UTS数据传输系统",
             "数据同步": "数据同步",
@@ -12,7 +13,7 @@ PLATFORM_CONFIG = {
     },
     "juejin": {
         "username": "19121300184",
-        "password": "963@qazwsx",  # 填你的掘金密码
+        "password": os.getenv("JUEJIN_PASSWORD"),
         "column": {
             "UTS数据传输": "UTS数据传输",
             "数据同步": "数据同步",
@@ -22,7 +23,7 @@ PLATFORM_CONFIG = {
     },
     "zhihu": {
         "username": "18602163799",
-        "password": "963@qazwsx",  # 填你的知乎密码
+        "password": os.getenv("JUEJIN_PASSWORD"),
         "column": {
             "UTS数据传输": "UTS数据传输",
             "数据同步": "数据同步",
@@ -33,7 +34,7 @@ PLATFORM_CONFIG = {
 }
 
 # AI 密钥
-AI_API_KEY = "sk-6c6716e188ee498f9466fd1f2daff8b5"  # 填DeepSeek API Key
+AI_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 
 # 标签
 TAGS = {
