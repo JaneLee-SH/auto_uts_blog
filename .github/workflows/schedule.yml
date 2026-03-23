@@ -1,4 +1,4 @@
-name: UTS技术博客 每日8点自动发布
+name: UTS技术博客 每日8点自动发布（终极版）
 on:
   schedule:
     - cron: '0 0 * * 1-5'
@@ -8,14 +8,16 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # 修复Node.js警告
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - uses: actions/checkout@v4
-      - name: 设置Python
+      - name: 设置Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: 安装依赖
-        run: pip install requests
-      - name: 运行AI自动化发布
+        run: pip install requests playwright python-dotenv
+      - name: 安装浏览器
+        run: playwright install chromium
+      - name: 运行自动化发布
         run: python main.py
