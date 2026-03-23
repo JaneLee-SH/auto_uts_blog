@@ -1,15 +1,21 @@
 name: UTS技术博客 每日8点自动发布
 on:
   schedule:
-    - cron: '0 0 * * 1-5'  # 北京时间 8:00 工作日发
+    - cron: '0 0 * * 1-5'
   workflow_dispatch:
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # 修复Node.js警告
     steps:
       - uses: actions/checkout@v4
+      - name: 设置Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: 安装依赖
-        run: pip install requests python-dotenv markdown2
+        run: pip install requests
       - name: 运行AI自动化发布
         run: python main.py
