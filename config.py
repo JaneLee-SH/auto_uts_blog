@@ -43,3 +43,11 @@ TAGS = {
     "信创": ["信创", "国产化", "自主可控", "政策解读"],
     "国产数据库": ["国产数据库", "达梦", "人大金仓", "OceanBase"]
 }
+
+# 专栏专属封面
+COVER_MAP = {
+    "UTS数据传输": "https://picsum.photos/id/1/800/420",
+    "数据同步": "https://picsum.photos/id/2/800/420",
+    "信创": "https://picsum.photos/id/3/800/420",
+    "国产数据库": "https://picsum.photos/id/4/800/420"
+}
