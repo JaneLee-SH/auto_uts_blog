@@ -1,38 +1,40 @@
 from config import PLATFORM_CONFIG, AI_API_KEY
+from ai_writer import AIWriter
+from publisher import AutoPublisher
 import os
-import traceback
 
 def run():
-    try:
-        # 确保material文件夹存在
-        if not os.path.exists("material"):
-            os.makedirs("material")
-        
-        # 读取素材
-        file_path = "material/input.txt"
-        if not os.path.exists(file_path):
-            with open(file_path, "w", encoding="utf-8") as f:
-                f.write("UTS客户问题：文件传输失败，提示连接超时，怎么解决？")
-        
-        with open(file_path, "r", encoding="utf-8") as f:
-            material = f.read().strip()
+    print("=" * 60)
+    print(" UTS 自动化博客发布系统 - 终极完整版 ")
+    print(" 每天8:00 自动发文 CSDN / 掘金 / 知乎 ")
+    print("=" * 60)
 
-        if not material:
-            print("ℹ️ 使用默认测试素材")
-            material = "UTS客户问题：文件传输失败，提示连接超时，怎么解决？"
+    os.makedirs("material", exist_ok=True)
+    path = "material/input.txt"
 
-        print("✅ 素材读取成功")
-        print("✅ AI生成文章中...")
-        print("✅ 模拟三平台发布完成")
-        print("🎉 自动化任务执行成功！")
+    if not os.path.exists(path):
+        with open(path, "w", encoding="utf-8") as f:
+            f.write("UTS客户问题：连接超时怎么解决？")
 
-        # 发布后清空素材
-        with open(file_path, "w", encoding="utf-8") as f:
-            f.write("")
-            
-    except Exception as e:
-        print(f"❌ 错误：{e}")
-        traceback.print_exc()
+    with open(path, "r", encoding="utf-8") as f:
+        mat = f.read().strip()
+
+    if not mat:
+        mat = "UTS客户问题：连接超时怎么解决？"
+
+    # AI 生成
+    writer = AIWriter(AI_API_KEY)
+    article = writer.write(mat)
+
+    # 发布
+    pub = AutoPublisher(PLATFORM_CONFIG)
+    pub.publish(article)
+
+    # 清空素材
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("")
+
+    print("\n🎉 全部发布完成！")
 
 if __name__ == "__main__":
     run()
